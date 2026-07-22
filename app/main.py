@@ -1,0 +1,50 @@
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from core.config import settings
+from routers import (
+    auth,
+    networks,
+    nodes,
+    pipes,
+    telemetry,
+    scenarios,
+    energy,
+    leaks,
+    forecast,
+    maintenance,
+    quality,
+    carbon,
+    ws,
+)
+
+app = FastAPI(title="Aquaflow API", version="1.0.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[o.strip() for o in settings.CORS_ORIGINS(",") if o.strip()],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+for r in [
+    auth.router,
+    networks.router,
+    nodes.router,
+    pipes.router,
+    telemetry.router,
+    scenarios.router,
+    energy.router,
+    leaks.router,
+    forecast.router,
+    maintenance.router,
+    quality.router,
+    carbon.router,
+    ws.router,
+]:
+    app.include_router(r)
+
+
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
