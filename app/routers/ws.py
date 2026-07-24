@@ -1,6 +1,6 @@
 import asyncio, json, math, random
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
-from ..realtime import hub
+from ..core.realtime import hub
 
 router = APIRouter()
 

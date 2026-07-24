@@ -1,3 +1,10 @@
+from datetime import datetime, timezone
+import sys
+from pathlib import Path
+
+# Add the parent directory to path so imports work
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
 """Seed the DB with the default demo network + a demo user."""
 
 import asyncio
@@ -68,6 +75,7 @@ async def run():
                 email="demo@aquaflow.io",
                 hashed_password=hash_password("demo1234"),
                 role="admin",
+                updated_at=datetime.now(timezone.utc),
             )
             db.add(u)
             await db.flush()
@@ -77,7 +85,9 @@ async def run():
         if net:
             print("Already seeded.")
             return
-        net = Network(name="Default", owner_id=u.id)
+        net = Network(
+            name="Default", owner_id=u.id, updated_at=datetime.now(timezone.utc)
+        )
         db.add(net)
         await db.flush()
         for r in NODES:
@@ -96,6 +106,7 @@ async def run():
                     elevation=r[9],
                     leak_prob=r[10],
                     status=r[11],
+                    updated_at=datetime.now(timezone.utc),
                 )
             )
         for r in PIPES:
@@ -111,6 +122,7 @@ async def run():
                     headloss=r[6],
                     material=r[7],
                     age=r[8],
+                    updated_at=datetime.now(timezone.utc),
                 )
             )
         await db.commit()

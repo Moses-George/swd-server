@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
-from core.database import get_async_db
+from ..core.database import get_async_db
 from ..models import User
 from ..schemas import UserCreate, UserOut, Token, LoginIn
 from ..core.security import hash_password, verify_password, create_token, current_user
@@ -24,12 +24,12 @@ async def register(body: UserCreate, db: AsyncSession = Depends(get_async_db)):
 
 @router.post("/login", response_model=Token)
 async def login(body: LoginIn, db: AsyncSession = Depends(get_async_db)):
-    u = (
+    user = (
         await db.execute(select(User).where(User.email == body.email))
     ).scalar_one_or_none()
-    if not u or not verify_password(body.password, u.hashed_password):
+    if not user or not verify_password(body.password, user.hashed_password):
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "bad credentials")
-    return Token(access_token=create_token(u.email))
+    return Token(access_token=create_token(user.email), user=user)
 
 
 @router.get("/me", response_model=UserOut)

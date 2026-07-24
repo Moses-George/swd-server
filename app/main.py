@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from core.config import settings
-from routers import (
+from .core.config import settings
+from .routers import (
     auth,
     networks,
     nodes,
@@ -21,7 +21,7 @@ app = FastAPI(title="Aquaflow API", version="1.0.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[o.strip() for o in settings.CORS_ORIGINS(",") if o.strip()],
+    allow_origins=[o.strip() for o in settings.CORS_ORIGINS.split(",") if o.strip()],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
