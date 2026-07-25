@@ -15,6 +15,7 @@ from .routers import (
     quality,
     carbon,
     ws,
+    topology
 )
 
 app = FastAPI(title="Aquaflow API", version="1.0.0")
@@ -41,6 +42,7 @@ for r in [
     quality.router,
     carbon.router,
     ws.router,
+    topology.router
 ]:
     app.include_router(r)
 
