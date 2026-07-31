@@ -10,8 +10,9 @@ from pathlib import Path
 from typing import Iterable
 import numpy as np
 
-ART = Path(__file__).parent / "artifacts"
+# ART = Path(__file__).parent / "artifacts"
 # ART.mkdir(exist_ok=True)
+ART = Path("/tmp/ml_artifacts") if os.environ.get("VERCEL") else Path(__file__).parent / "artifacts"
 
 try:
     ART.mkdir(exist_ok=True)

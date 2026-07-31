@@ -1,17 +1,19 @@
 from datetime import datetime, timezone
 import sys
 from pathlib import Path
+import os
 
 # Add the parent directory to path so imports work
-sys.path.insert(0, str(Path(__file__).parent.parent))
+# sys.path.insert(0, str(Path(__file__).parent.parent))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 """Seed the DB with the default demo network + a demo user."""
 
 import asyncio
 from sqlalchemy import select
-from core.database import AsyncSessionLocal
-from models import User, Network, Node, Pipe
-from core.security import hash_password
+from .core.database import AsyncSessionLocal
+from .models import User, Network, Node, Pipe
+from .core.security import hash_password
 
 NODES = [
     (
