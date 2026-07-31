@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     REDIS_URL: str | None = None
 
-    FRONTEND_URL: str
+    FRONTEND_URL: Optional[str]
     
     CORS_ORIGINS: str = "http://localhost:5173,http://localhost:8080"
     ml_artifacts_dir: str = "ml/artifacts"
