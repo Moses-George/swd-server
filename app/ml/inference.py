@@ -11,7 +11,12 @@ from typing import Iterable
 import numpy as np
 
 ART = Path(__file__).parent / "artifacts"
-ART.mkdir(exist_ok=True)
+# ART.mkdir(exist_ok=True)
+
+try:
+    ART.mkdir(exist_ok=True)
+except OSError:
+    pass  # read-only filesystem in serverless; directory should already exist if reading pretrained files
 
 
 # ---------- Leak detection ----------
